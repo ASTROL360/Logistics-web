@@ -1,0 +1,103 @@
+﻿generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(CUSTOMER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customers Customer[]
+  drivers   Driver[]
+}
+
+enum Role {
+  ADMIN
+  STAFF
+  DRIVER
+  CUSTOMER
+}
+
+model Customer {
+  id        String     @id @default(cuid())
+  userId    String
+  company   String?
+  phone     String?
+  address   String?
+  user      User       @relation(fields: [userId], references: [id])
+  shipments Shipment[]
+}
+
+model Driver {
+  id        String     @id @default(cuid())
+  userId    String
+  licenseNo String     @unique
+  vehicleId String?
+  status    DriverStatus @default(OFFLINE)
+  user      User       @relation(fields: [userId], references: [id])
+  vehicle   Vehicle?   @relation(fields: [vehicleId], references: [id])
+  shipments Shipment[]
+}
+
+enum DriverStatus {
+  ONLINE
+  OFFLINE
+  ON_ROUTE
+}
+
+model Vehicle {
+  id       String   @id @default(cuid())
+  plateNo  String   @unique
+  type     String
+  capacity Float?
+  drivers  Driver[]
+}
+
+model Shipment {
+  id           String         @id @default(cuid())
+  trackingCode String         @unique
+  customerId   String
+  driverId     String?
+  origin       String
+  destination  String
+  status       ShipmentStatus @default(PENDING)
+  weight       Float?
+  fee          Float?
+  notes        String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id])
+  driver   Driver?  @relation(fields: [driverId], references: [id])
+  updates  ShipmentUpdate[]
+}
+
+enum ShipmentStatus {
+  PENDING
+  PICKED_UP
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  FAILED
+}
+
+model ShipmentUpdate {
+  id         String   @id @default(cuid())
+  shipmentId String
+  status     ShipmentStatus
+  location   String?
+  notes      String?
+  createdAt  DateTime @default(now())
+
+  shipment Shipment @relation(fields: [shipmentId], references: [id])
+}
