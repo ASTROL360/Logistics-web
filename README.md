@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Swift Logistics
 
-## Getting Started
+Swift Logistics is a Next.js logistics website and shipment management app. This README tracks both how to run the project and its progress toward a real, revenue-generating service. Update the progress section whenever a milestone is completed.
 
-First, run the development server:
+## Current Progress
+
+**Overall stage: working MVP foundation**  
+**Next milestone: Step 1 — secure admin access and shipment management APIs**
+
+### Completed
+
+- Public marketing pages and shipment tracking page.
+- PostgreSQL database connected through Prisma, with the initial migration applied.
+- Shipment creation form with required-field and number validation.
+- Shipment list page backed by PostgreSQL.
+- Tracking lookup by tracking code, including the initial shipment status update.
+- Creation confirmation that shows the new tracking code.
+- Manually checked the shipment list, create, and tracking API success and error paths.
+
+### Product Roadmap
+
+Work through these steps in order. Complete one milestone, verify it, and record the result here before moving to the next.
+
+1. **Secure the admin area and write APIs — NEXT**
+   - Add admin sign-in and sign-out.
+   - Require an authenticated admin session for admin pages and shipment creation or management APIs.
+   - Keep public shipment tracking available while limiting exposed customer information.
+2. **Build the delivery operations workflow**
+   - Add shipment status updates and an operations view.
+   - Add driver or delivery-partner assignment and capture delivery completion details.
+3. **Set service areas and pricing rules**
+   - Define supported pickup and delivery areas and how delivery prices are calculated.
+   - Keep business rates configurable rather than hard-coded into the page.
+4. **Add customer quotes and booking**
+   - Let a customer enter delivery details, see a price, and submit a booking.
+   - Show a clear confirmation and tracking code after the booking is accepted.
+5. **Add payments and business invoicing**
+   - Connect a payment provider after the service, pricing, and booking flow are defined.
+   - Add payment state, receipts, invoices, and failure handling.
+6. **Add customer and operations notifications**
+   - Send booking confirmations and status updates by the chosen channels.
+7. **Prepare for production**
+   - Add automated tests for important flows, review access and data handling, configure backups and monitoring, and deploy.
+
+### Progress Log
+
+- **2026-11-02:** PostgreSQL migration applied; Prisma client generated; shipment create/list and tracking endpoints manually exercised. Admin authentication is the next milestone.
+
+## Run Locally
+
+### Requirements
+
+- Node.js and npm.
+- PostgreSQL running locally or a reachable PostgreSQL database.
+
+### Setup
+
+1. Install packages:
+
+   ```bash
+   npm install
+   ```
+
+2. Copy `.env.example` to `.env` and set `DATABASE_URL` to your PostgreSQL connection string. Keep `.env` private; it is ignored by Git.
+
+3. Generate Prisma Client and apply database migrations:
+
+   ```bash
+   npm run db:generate
+   npm run db:migrate
+   ```
+
+4. Start the local server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000).
+
+If port 3000 is already in use, use the existing local server or stop it with `Ctrl+C` in the terminal where it is running before starting another one.
+
+## API Endpoints
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| `GET` | `/api/shipments` | List shipments |
+| `POST` | `/api/shipments` | Create a shipment |
+| `GET` | `/api/track/{code}` | Look up a shipment and its status history |
+
+The route handlers are in `src/app/api/`.
+
+## Useful Database Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run db:generate
+npm run db:migrate
+npm run db:deploy
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Use `db:migrate` while developing schema changes. Use `db:deploy` to apply already-created migrations in a production environment.
