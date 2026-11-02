@@ -1,4 +1,6 @@
 ﻿import Link from "next/link"
+import Image from "next/image"
+import sectionImage from "../../img/Section.png"
 import { Package, Search, Truck, Clock, ShieldCheck, MapPin, Phone, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -7,8 +9,8 @@ export default function HomePage() {
   return (
     <div>
       <section className="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white overflow-hidden">
-        <div className="container mx-auto px-4 py-20 md:py-32 relative">
-          <div className="max-w-3xl">
+        <div className="container relative mx-auto grid items-center gap-8 px-4 py-16 md:grid-cols-2 md:gap-10 md:py-20">
+          <div className="relative z-10 max-w-3xl">
             <h1 className="animate-enter text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
               Swift, Secure & Reliable
               <span className="block text-blue-400 mt-2">Logistics Solutions</span>
@@ -44,6 +46,16 @@ export default function HomePage() {
                 </div>
               </CardContent>
             </Card>
+          </div>
+          <div className="animate-enter animate-delay-200 relative h-[280px] sm:h-[360px] md:h-[460px]">
+            <Image
+              src={sectionImage}
+              alt="Blue shipping container being lifted for delivery"
+              fill
+              preload
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-right"
+            />
           </div>
         </div>
       </section>

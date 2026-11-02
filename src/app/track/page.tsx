@@ -81,6 +81,25 @@ export default function TrackPage() {
                 <p className="text-gray-700 text-sm mt-1">{result.receiverName} • {result.receiverPhone}</p>
               </div>
             </div>
+            <div>
+              <h3 className="text-lg font-bold text-gray-900 mb-4">Shipment History</h3>
+              <div className="space-y-4">
+                {(result.updates || []).map((u: any, idx: number) => (
+                  <div key={u.id} className="flex gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-3 h-3 rounded-full bg-blue-700"></div>
+                      {idx < (result.updates.length - 1) && <div className="w-0.5 h-full bg-blue-200 mt-1"></div>}
+                    </div>
+                    <div className="pb-4 flex-1">
+                      <p className="font-bold text-gray-900">{u.status.replace(/_/g, ' ')}</p>
+                      {u.location && <p className="text-gray-700 text-sm">{u.location}</p>}
+                      {u.remark && <p className="text-gray-600 text-sm">{u.remark}</p>}
+                      <p className="text-xs text-gray-500 mt-1">{u.createdAt}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}

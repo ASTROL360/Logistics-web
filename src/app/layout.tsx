@@ -5,6 +5,7 @@ import { Navbar } from '@/components/site/navbar'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
+const currentYear = new Date().getFullYear()
 
 export const metadata: Metadata = {
   title: 'SwiftCourier - Courier & Logistics',
@@ -12,7 +13,6 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const year = new Date().getFullYear()
   return (
     <html lang="en">
       <body className={geistSans.variable + ' ' + geistMono.variable + ' antialiased'}>
@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1">{children}</main>
           <footer className="border-t bg-gray-900 text-white py-8 text-center">
             <div className="container mx-auto px-4">
-              <p className="font-semibold">&copy; {year} SwiftCourier. All rights reserved.</p>
+              <p className="font-semibold">&copy; {currentYear} SwiftCourier. All rights reserved.</p>
             </div>
           </footer>
         </div>
